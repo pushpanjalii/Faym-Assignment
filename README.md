@@ -1,4 +1,3 @@
-````markdown
 # 💰 Payout Management System
 
 A full-stack web application for managing affiliate sales payouts with advance payments, reconciliation, withdrawal restrictions, and automatic recovery from failed payouts.
@@ -7,33 +6,37 @@ A full-stack web application for managing affiliate sales payouts with advance p
 
 ## 🚀 Features
 
-- **Create Sales** – Each sale starts with a `pending` status.
-- **Advance Payout** – Automatically pays **10%** of earnings for all eligible pending sales (only once per sale).
-- **Reconciliation** – Admin can approve or reject sales:
-  - ✅ **Approved:** Remaining earnings (`earning - advance`) are credited.
-  - ❌ **Rejected:** Any advance already paid is deducted from the user's balance.
-- **Withdrawals** – Users can withdraw their balance, limited to **one successful withdrawal every 24 hours**.
-- **Failed Payout Recovery** – If a withdrawal fails, the withdrawn amount is automatically restored.
-- **Full Audit Trail** – Every financial event is recorded in the transactions table.
-- **Clean UI** – Simple single-page interface for demonstration.
+- **Create Sales** – Every new sale is created with a `pending` status.
+- **Advance Payout** – Automatically credits **10%** of the earnings for every eligible pending sale. The advance is processed only once per sale.
+- **Reconciliation** – Admins can approve or reject pending sales.
+  - **Approved:** The remaining amount (`earning - advance`) is credited to the user's balance.
+  - **Rejected:** Any advance already paid is recovered by deducting it from the user's balance.
+- **Withdrawals** – Users can withdraw available funds, with a restriction of one successful withdrawal every 24 hours.
+- **Failed Payout Recovery** – If a withdrawal fails, the deducted amount is automatically restored.
+- **Transaction History** – Every balance-changing event is recorded for complete financial traceability.
+- **Simple User Interface** – Single-page application for easy demonstration and testing.
 
 ---
 
 # 🛠️ Tech Stack
 
-### Backend
+## Backend
+
 - Node.js
 - Express.js
 
-### Database
+## Database
+
 - SQLite
 
-### Frontend
+## Frontend
+
 - HTML
 - CSS
 - Vanilla JavaScript (Fetch API)
 
-### Utilities
+## Utilities
+
 - uuid
 - cors
 
@@ -43,7 +46,7 @@ A full-stack web application for managing affiliate sales payouts with advance p
 
 ## Prerequisites
 
-- Node.js (v14 or above)
+- Node.js (v14 or later)
 - npm
 
 ## Installation
@@ -55,38 +58,34 @@ git clone <repository-url>
 cd payout-system
 ```
 
-Install dependencies:
+Install the dependencies:
 
 ```bash
 npm install
 ```
 
-This installs:
+The project installs the following packages:
 
 - express
 - sqlite3
 - uuid
 - cors
 
-Start the server:
+Start the development server:
 
 ```bash
 npm start
 ```
 
-The server will start at:
+The application will be available at:
 
 ```
 http://localhost:3000
 ```
 
-Open your browser and visit:
+Open the above URL in your browser.
 
-```
-http://localhost:3000
-```
-
-The SQLite database (`payout.db`) is automatically created during the first run.
+The SQLite database (`payout.db`) is automatically created during the first application startup.
 
 ---
 
@@ -116,37 +115,37 @@ payout-system/
 
 # 📚 API Endpoints
 
-All endpoints are prefixed with `/api`.
+All API routes are prefixed with `/api`.
 
 | Method | Endpoint | Description |
 |---------|----------|-------------|
 | POST | `/sales` | Create a new sale (`userId`, `brand`, `earning`) |
-| GET | `/sales` | Get all sales |
-| GET | `/sales/user/:userId` | Get sales of a specific user |
+| GET | `/sales` | Retrieve all sales |
+| GET | `/sales/user/:userId` | Retrieve sales for a specific user |
 | POST | `/sales/reconcile` | Reconcile pending sales |
 | POST | `/payouts/advance` | Process advance payouts |
-| POST | `/withdrawals` | Request withdrawal |
-| POST | `/withdrawals/recover/:transactionId` | Recover failed withdrawal |
-| GET | `/users/:userId/balance` | Get current balance |
-| GET | `/users/:userId/transactions` | Get transaction history |
+| POST | `/withdrawals` | Request a withdrawal |
+| POST | `/withdrawals/recover/:transactionId` | Recover a failed withdrawal |
+| GET | `/users/:userId/balance` | Retrieve the current user balance |
+| GET | `/users/:userId/transactions` | Retrieve the transaction history |
 
 ---
 
 # 🖥️ Demo Walkthrough
 
-### 1. Default User
+## 1. Default User
 
-The application starts with the default user:
+The application starts with a default user:
 
 ```
 john_doe
 ```
 
-You can change it anytime from the input field.
+You can change the active user at any time using the input field.
 
 ---
 
-### 2. Create Sale
+## 2. Create a Sale
 
 Enter:
 
@@ -155,7 +154,7 @@ Enter:
 
 Click **Create Sale**.
 
-The sale is created with status:
+A new sale is created with the status:
 
 ```
 pending
@@ -163,7 +162,7 @@ pending
 
 ---
 
-### 3. Process Advance Payout
+## 3. Process Advance Payout
 
 Click:
 
@@ -171,17 +170,17 @@ Click:
 Process Advance Payout
 ```
 
-The system:
+The application will:
 
-- Finds all pending sales
-- Checks if advance has not already been paid
-- Pays **10%** of the earning
-- Credits the user's balance
-- Marks the sale as `advance_paid`
+- Find all eligible pending sales.
+- Verify that an advance has not already been processed.
+- Credit **10%** of the sale earnings.
+- Update the user's balance.
+- Mark the sale as `advance_paid`.
 
 ---
 
-### 4. Reconcile Sales
+## 4. Reconcile Sales
 
 Select one or more pending sales.
 
@@ -191,11 +190,11 @@ Click:
 Reconcile Selected
 ```
 
-Choose either:
+Choose one of the following actions.
 
 ### ✅ Approve
 
-The user receives:
+The remaining amount is credited:
 
 ```
 earning - advance
@@ -204,9 +203,9 @@ earning - advance
 Example:
 
 ```
-Sale = ₹100
+Sale Amount = ₹100
 
-Advance = ₹10
+Advance Paid = ₹10
 
 Final Credit = ₹90
 ```
@@ -215,21 +214,21 @@ Final Credit = ₹90
 
 ### ❌ Reject
 
-If an advance was already paid:
+If an advance has already been paid:
 
 ```
-Advance = ₹10
+Advance Paid = ₹10
 
 Balance -= ₹10
 ```
 
-The adjustment is stored as a negative transaction.
+The deduction is recorded as a negative transaction to maintain the audit trail.
 
 ---
 
-### 5. Withdraw Funds
+## 5. Withdraw Funds
 
-Enter an amount.
+Enter the withdrawal amount.
 
 Click:
 
@@ -237,48 +236,44 @@ Click:
 Request Withdrawal
 ```
 
-The system validates:
+Before processing, the system verifies:
 
-- User has enough balance
-- 24-hour withdrawal cooldown has expired
+- The user has sufficient balance.
+- The 24-hour withdrawal cooldown has elapsed.
 
 A payout is then simulated.
 
-For demo purposes:
+For demonstration purposes:
 
-- **70% Success**
-- **30% Failure**
-
----
+- **70% chance of success**
+- **30% chance of failure**
 
 ### Successful Withdrawal
 
-- Balance decreases
-- Withdrawal timestamp updated
-
----
+- User balance is reduced.
+- Last successful withdrawal timestamp is updated.
 
 ### Failed Withdrawal
 
-The system automatically:
+The application automatically:
 
-- Credits the withdrawn amount back
-- Creates a recovery transaction
-- Maintains a complete audit trail
+- Restores the withdrawn amount.
+- Creates a recovery transaction.
+- Preserves a complete audit trail.
 
 ---
 
-### 6. View User Data
+## 6. View User Information
 
-The right panel displays:
+The right-side panel displays:
 
 - Current Balance
 - Last Withdrawal Time
 - Complete Transaction History
 
-Each transaction includes:
+Each transaction contains:
 
-- Type
+- Transaction Type
 - Amount
 - Status
 - Timestamp
@@ -287,7 +282,7 @@ Each transaction includes:
 
 # 🔄 Business Flow
 
-```
+```text
 Create Sale
       │
       ▼
@@ -311,7 +306,7 @@ User Balance
 Withdrawal Request
       │
       ▼
-Success ───────► Complete
+Success ─────► Completed
 
 Failure
       │
@@ -325,13 +320,13 @@ Automatic Recovery
 
 | Scenario | Handling |
 |----------|----------|
-| Duplicate advance payout | Uses `advance_paid` flag to prevent duplicate credits |
-| Reconciling already processed sales | Only `pending` sales are updated |
+| Duplicate advance payout | Prevented using the `advance_paid` flag |
+| Reconciliation of processed sales | Only sales with `pending` status are processed |
 | Negative balance | Supported; future earnings offset the deficit |
-| Concurrent withdrawals | SQLite transactions reduce race conditions (production should use row-level locking) |
-| Failed payout | Amount automatically restored through recovery transaction |
-| Large batches | Demo processes all records; production should use chunking and pagination |
-| Audit trail | Every balance-changing event is recorded |
+| Concurrent withdrawals | SQLite transactions reduce race conditions (production systems should use row-level locking) |
+| Failed withdrawal | Automatically restored through a recovery transaction |
+| Large batches | Demo processes all records; production systems should implement chunking or pagination |
+| Audit trail | Every balance-changing operation is permanently recorded |
 
 ---
 
@@ -345,7 +340,7 @@ SQLite can easily be replaced with:
 - MySQL
 - MariaDB
 
-Update the database connection logic inside:
+Update the database connection inside:
 
 ```
 database.js
@@ -355,13 +350,13 @@ database.js
 
 ## Payment Gateway Integration
 
-Currently withdrawals are simulated using:
+Withdrawals are currently simulated using:
 
 ```javascript
 Math.random()
 ```
 
-Replace the simulation with an actual payment provider such as:
+Replace the simulation with an actual payment gateway such as:
 
 - Stripe
 - Razorpay
@@ -371,9 +366,9 @@ Replace the simulation with an actual payment provider such as:
 
 ## Authentication
 
-The demo intentionally omits authentication.
+Authentication is intentionally omitted from the demo.
 
-For production, consider:
+For a production deployment, consider implementing:
 
 - JWT Authentication
 - Session-based Authentication
@@ -383,28 +378,27 @@ For production, consider:
 
 ## Testing
 
-No automated test suite is included.
+The project does not include an automated test suite.
 
-Recommended testing frameworks:
+Recommended testing frameworks include:
 
 - Jest
 - Mocha
 - Supertest
 
-Manual testing can be performed using the demo workflow described above.
+The application can also be verified manually by following the demo workflow described above.
 
 ---
 
 # 📌 Notes
 
-- SQLite database is created automatically on first run.
-- All financial events are transactional.
-- Every balance update is recorded for traceability.
-- Recovery ensures users never permanently lose funds due to payout failures.
+- The SQLite database is automatically created during the first run.
+- All financial operations are handled transactionally.
+- Every balance modification is recorded for traceability.
+- Automatic recovery ensures users never permanently lose funds because of payout failures.
 
 ---
 
 # 📄 License
 
 This project is intended for educational and demonstration purposes.
-````
