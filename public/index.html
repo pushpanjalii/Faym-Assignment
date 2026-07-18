@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payout Management System</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>💰 Payout Management System</h1>
+
+    <!-- User Selection -->
+    <div class="section">
+      <h2>User</h2>
+      <input type="text" id="userId" placeholder="Enter user ID (e.g., john_doe)" value="john_doe">
+      <button id="loadUserBtn">Load User Data</button>
+    </div>
+
+    <!-- Create Sale -->
+    <div class="section">
+      <h2>Create Sale</h2>
+      <input type="text" id="brand" placeholder="Brand" value="brand_1">
+      <input type="number" id="earning" placeholder="Earning" value="40">
+      <button id="createSaleBtn">Create Sale</button>
+    </div>
+
+    <!-- Advance Payout -->
+    <div class="section">
+      <h2>Advance Payout</h2>
+      <button id="advanceBtn">Process Advance Payout (for current user)</button>
+    </div>
+
+    <!-- Reconciliation -->
+    <div class="section">
+      <h2>Reconcile Sales</h2>
+      <div id="pendingSalesList"></div>
+      <button id="reconcileBtn">Reconcile Selected</button>
+    </div>
+
+    <!-- Withdrawal -->
+    <div class="section">
+      <h2>Withdrawal</h2>
+      <input type="number" id="withdrawAmount" placeholder="Amount" step="0.01">
+      <button id="withdrawBtn">Request Withdrawal</button>
+    </div>
+
+    <!-- User Info -->
+    <div class="section">
+      <h2>User Info</h2>
+      <pre id="userInfo">Loading...</pre>
+    </div>
+
+    <!-- Transactions -->
+    <div class="section">
+      <h2>Transaction History</h2>
+      <table id="txnTable">
+        <thead><tr><th>ID</th><th>Type</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead>
+        <tbody id="txnBody"></tbody>
+      </table>
+    </div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
